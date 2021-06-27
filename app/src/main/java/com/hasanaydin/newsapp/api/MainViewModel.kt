@@ -1,5 +1,6 @@
 package com.hasanaydin.newsapp.api
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.gson.GsonBuilder
 import retrofit2.Call
@@ -11,6 +12,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class MainViewModel : ViewModel() {
 
+    val livedata : MutableLiveData<NewsData> = MutableLiveData()
+
     fun gam() {
         val gson = GsonBuilder().setLenient().create()
         val retrofit: Retrofit = Retrofit.Builder().baseUrl(APIUrl.BASE_URL)
@@ -21,6 +24,9 @@ class MainViewModel : ViewModel() {
             override fun onResponse(call: Call<NewsData?>?, response: Response<NewsData?>?) {
                 if (response != null) {
                     println(response.body())
+
+                    livedata.postValue(response.body())
+
                 }
             }
 
